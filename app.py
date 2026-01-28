@@ -44,7 +44,7 @@ def handle_buttons(message):
         bot.send_message(message.chat.id, f"📋 פרטי חשבון:\n🆔 מזהה: {uid}\n💵 יתרה: ₪{balance}")
 
     elif message.text == "💰 הפקדה / משיכה":
-        bot.send_message(message.chat.id, "להפקדה או משיכה, שלח הודעה למנהל: @YourUsername")
+        bot.send_message(message.chat.id, "להפקדה או משיכה, שלח הודעה למנהל: @@EmpireStakes")
 
 # פקודת ההטענה שלך (נשארת אותו דבר)
 @bot.message_handler(commands=['set'])
@@ -69,3 +69,4 @@ def run_bot():
 if __name__ == "__main__":
     threading.Thread(target=run_bot).start()
     app.run(host='0.0.0.0', port=10000)
+
