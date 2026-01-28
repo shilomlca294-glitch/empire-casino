@@ -24,33 +24,37 @@ def main_menu():
     markup.add(btn4)
     return markup
 
+# ... (כאן נמצא הקוד של ה-start והגדרות הבוט)
+
 @bot.message_handler(commands=['start'])
 def start(message):
-    uid = str(message.from_user.id)
-    if uid not in users_db:
-        users_db[uid] = 0
-    bot.send_message(message.chat.id, "🏆 ברוך הבא ל-EMPIRE STAKES! 🏆\nהמקום שלך למשחקי יוקרה.", reply_markup=main_menu())
+    # הקוד של הסטארט...
+    pass
 
+# הנה המקום! תדביק את הקוד ששלחת כאן:
 @bot.message_handler(func=lambda message: True)
 def handle_all_messages(message):
     uid = str(message.from_user.id)
     text = message.text
+    print(f"Received message: '{text}' from {uid}")
 
-    if text == "🎰 כניסה למשחקים":
+    if "כניסה למשחקים" in text:
         markup = types.InlineKeyboardMarkup()
         btn = types.InlineKeyboardButton("לחץ כאן לכניסה לאתר 🌐", url=URL_SITE)
         markup.add(btn)
-        bot.send_message(message.chat.id, "בהצלחה! לחץ על הכפתור למטה כדי להתחיל לשחק:", reply_markup=markup)
+        bot.send_message(message.chat.id, "בהצלחה! לחץ למטה:", reply_markup=markup)
 
-    elif text == "💎 שירות לקוחות VIP":
-        bot.send_message(message.chat.id, "👑 מוקד VIP זמין עבורך!\nלכל שאלה או עזרה טכנית, פנה למנהל: @YourUsername")
+    elif "שירות לקוחות" in text or "VIP" in text:
+        bot.send_message(message.chat.id, "👑 מוקד VIP זמין עבורך! פנה למנהל: @YourUsername")
 
-    elif text == "👤 ניהול חשבון":
+    elif "ניהול חשבון" in text:
         balance = users_db.get(uid, 0)
         bot.send_message(message.chat.id, f"📋 פרטי חשבון:\n🆔 מזהה: {uid}\n💵 יתרה: ₪{balance}")
 
-    elif text == "💰 הפקדה / משיכה":
-        bot.send_message(message.chat.id, "💳 לביצוע הפקדה או משיכה מהירה:\nשלח הודעה למנהל בצירוף ה-ID שלך.")
+    elif "הפקדה" in text:
+        bot.send_message(message.chat.id, "💳 להפקדה או משיכה שלח הודעה למנהל.")
+
+# אחרי זה מגיע הקוד של ה-set והרצת השרת...
 
 # פקודת ניהול להטענת כסף
 @bot.message_handler(commands=['set'])
@@ -75,3 +79,4 @@ def run_bot():
 if __name__ == "__main__":
     threading.Thread(target=run_bot).start()
     app.run(host='0.0.0.0', port=10000)
+
