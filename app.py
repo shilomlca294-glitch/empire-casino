@@ -6,20 +6,22 @@ from flask import Flask
 # --- הגדרות ---
 TOKEN = '8385525865:AAEgxmw8Sufo35fzEpVT50VFtP4wvhAN3pc'
 ADMIN_ID = 6504579711  # ה-ID שלך
-URL_SITE = "https://your-site.onrender.com" # הקישור לאתר שלך ב-Render
+URL_SITE = "https://your-site.onrender.com" # הקישור שלך מרנדר
 bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
 
-users_db = {} # בגרסה הבאה נוסיף שמירה לקובץ
+users_db = {} 
 
-# פונקציה ליצירת המקלדת הראשית
+# תפריט כפתורים ראשי
 def main_menu():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("🎰 כניסה למשחקים")
-    item2 = types.KeyboardButton("👤 ניהול חשבון")
-    item3 = types.KeyboardButton("💰 הפקדה / משיכה")
-    markup.add(item1)
-    markup.add(item2, item3)
+    btn1 = types.KeyboardButton("🎰 כניסה למשחקים")
+    btn2 = types.KeyboardButton("👤 ניהול חשבון")
+    btn3 = types.KeyboardButton("💰 הפקדה / משיכה")
+    btn4 = types.KeyboardButton("💎 שירות לקוחות VIP")
+    markup.add(btn1)
+    markup.add(btn2, btn3)
+    markup.add(btn4)
     return markup
 
 @bot.message_handler(commands=['start'])
@@ -27,26 +29,30 @@ def start(message):
     uid = str(message.from_user.id)
     if uid not in users_db:
         users_db[uid] = 0
-    bot.send_message(message.chat.id, "ברוך הבא ל-EMPIRE STAKES! 🏆", reply_markup=main_menu())
+    bot.send_message(message.chat.id, "🏆 ברוך הבא ל-EMPIRE STAKES! 🏆\nהמקום שלך למשחקי יוקרה.", reply_markup=main_menu())
 
 @bot.message_handler(func=lambda message: True)
-def handle_buttons(message):
+def handle_all_messages(message):
     uid = str(message.from_user.id)
-    
-    if message.text == "🎰 כניסה למשחקים":
+    text = message.text
+
+    if text == "🎰 כניסה למשחקים":
         markup = types.InlineKeyboardMarkup()
         btn = types.InlineKeyboardButton("לחץ כאן לכניסה לאתר 🌐", url=URL_SITE)
         markup.add(btn)
-        bot.send_message(message.chat.id, "בהצלחה במשחקים! לחץ על הכפתור למטה:", reply_markup=markup)
+        bot.send_message(message.chat.id, "בהצלחה! לחץ על הכפתור למטה כדי להתחיל לשחק:", reply_markup=markup)
 
-    elif message.text == "👤 ניהול חשבון":
+    elif text == "💎 שירות לקוחות VIP":
+        bot.send_message(message.chat.id, "👑 מוקד VIP זמין עבורך!\nלכל שאלה או עזרה טכנית, פנה למנהל: @YourUsername")
+
+    elif text == "👤 ניהול חשבון":
         balance = users_db.get(uid, 0)
         bot.send_message(message.chat.id, f"📋 פרטי חשבון:\n🆔 מזהה: {uid}\n💵 יתרה: ₪{balance}")
 
-    elif message.text == "💰 הפקדה / משיכה":
-        bot.send_message(message.chat.id, "להפקדה או משיכה, שלח הודעה למנהל: @@EmpireStakes")
+    elif text == "💰 הפקדה / משיכה":
+        bot.send_message(message.chat.id, "💳 לביצוע הפקדה או משיכה מהירה:\nשלח הודעה למנהל בצירוף ה-ID שלך.")
 
-# פקודת ההטענה שלך (נשארת אותו דבר)
+# פקודת ניהול להטענת כסף
 @bot.message_handler(commands=['set'])
 def set_balance(message):
     if message.from_user.id != ADMIN_ID: return
@@ -58,10 +64,10 @@ def set_balance(message):
     except:
         bot.reply_to(message, "שימוש: /set ID סכום")
 
-# --- הרצת האתר ---
+# --- חלק האתר (לרנדר) ---
 @app.route('/')
 def home():
-    return "<h1>The Casino Site is Running!</h1>"
+    return "<h1>The Casino Site is Live</h1>"
 
 def run_bot():
     bot.infinity_polling()
@@ -69,4 +75,3 @@ def run_bot():
 if __name__ == "__main__":
     threading.Thread(target=run_bot).start()
     app.run(host='0.0.0.0', port=10000)
-
