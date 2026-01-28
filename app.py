@@ -3,8 +3,8 @@ import threading
 from flask import Flask, render_template_string
 
 # הגדרות בסיסיות
-TOKEN = 'כאן_שים_את_הטוקן_שלך'
-ADMIN_ID = 12345678 # כאן שים את ה-ID שלך
+TOKEN = '8385525865:AAEgxmw8Sufo35fzEpVT50VFtP4wvhAN3pc'
+ADMIN_ID = 6504579711 # כאן שים את ה-ID שלך
 bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
 
@@ -52,3 +52,4 @@ if __name__ == "__main__":
     threading.Thread(target=run_bot).start()
     # מפעיל את האתר
     app.run(host='0.0.0.0', port=10000)
+
