@@ -12,6 +12,7 @@ TOKEN = '8385525865:AAFqLhwgBgs5CRKHhNUPlRcWilTFidWzWec'
 ADMIN_ID = 6504579711
 GROUP_URL = "https://t.me/+W1FOgCfwvKczNDg0"
 URL_SITE = "https://empire-stakes.onrender.com"
+MONGO_URI = "mongodb+srv://shilomlca294_db_user:VIj9XsxyHfKBbajY@empirestakes.xzrducv.mongodb.net/?appName=EmpireStakes"
 # ===============================================
 
 bot = telebot.TeleBot(TOKEN)
@@ -132,3 +133,4 @@ def run_bot():
 if __name__ == "__main__":
     threading.Thread(target=run_bot).start()
     app.run(host='0.0.0.0', port=10000)
+
