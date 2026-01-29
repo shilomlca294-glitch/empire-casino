@@ -148,5 +148,9 @@ def run_bot():
             time.sleep(10)
 
 if __name__ == "__main__":
-    threading.Thread(target=run_bot).start()
-    app.run(host='0.0.0.0', port=10000)
+    import os
+    # מפעיל את הבוט בנפרד
+    threading.Thread(target=run_bot, daemon=True).start()
+    # מפעיל את האתר על הפורט שהשרת מבקש
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
