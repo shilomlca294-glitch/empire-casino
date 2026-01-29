@@ -123,10 +123,16 @@ def home():
 def run_bot():
     while True:
         try:
-            bot.infinity_polling(timeout=60, skip_pending=True)
+            # הפקודה הזו מנתקת חיבורים ישנים לפני שמתחילים
+            bot.remove_webhook()
+            print("Bot is starting cleanly...")
+            bot.infinity_polling(timeout=60, long_polling_timeout=30, skip_pending=True)
         except Exception as e:
-            time.sleep(5)
+            # אם יש התנגשות, הוא יחכה 10 שניות וינסה שוב אוטומטית
+            print(f"Error: {e}")
+            time.sleep(10)
 
 if __name__ == "__main__":
     threading.Thread(target=run_bot).start()
     app.run(host='0.0.0.0', port=10000)
+
